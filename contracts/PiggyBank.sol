@@ -105,6 +105,8 @@ contract PiggyBank is ReentrancyGuard {
         uint256 _amount
     ) external nonReentrant isWithdrawn {
         if (msg.sender == address(0)) revert Errors.AddressZeroDetected();
+        if (msg.sender != piggyBankOwner) revert Errors.NotOwner();
+
 
         // track the total amount saved for each token
         uint256 tokenTotalBal = totalAmntSavedByTokens[_token];
@@ -127,6 +129,7 @@ contract PiggyBank is ReentrancyGuard {
     // emergency withdrawal - to withdraw the funds saved before the saving period ends, a 15% fee will be incurred
     function emergencyWithdrawal(IERC20 _token, uint256) external {
         if (msg.sender == address(0)) revert Errors.AddressZeroDetected();
+        if (msg.sender != piggyBankOwner) revert Errors.NotOwner();
 
         // track the total amount saved for each token
         uint256 tokenTotalBal = totalAmntSavedByTokens[_token];
@@ -161,4 +164,3 @@ contract PiggyBank is ReentrancyGuard {
 // 0x323e78f944A9a1FcF3a10efcC5319DBb0bB6e673 usdt
 // 0x036CbD53842c5426634e7929541eC2318f3dCF7e usdc
 // 0xE6F6e27c0BF1a4841E3F09d03D7D31Da8eAd0a27 dai
-
