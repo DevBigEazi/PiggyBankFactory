@@ -5,7 +5,6 @@ import "./PiggyBank.sol";
 
 contract PiggyBankFactory {
     address public developer;
-    
 
     struct DeployedPiggyBankInfo {
         address deployer;
@@ -20,7 +19,10 @@ contract PiggyBankFactory {
 
     DeployedPiggyBankInfo[] allPiggyBanks; // all piggies address
 
-    event PiggyBankCreated(address indexed piggyBankAddress, address indexed piggyBankOwner);
+    event PiggyBankCreated(
+        address indexed piggyBankAddress,
+        address indexed piggyBankOwner
+    );
 
     // function to create a new piggyBank using CREATE 2
     function createPiggyBank(
@@ -38,7 +40,13 @@ contract PiggyBankFactory {
             )
         );
 
-        address newPiggyBank = address(new PiggyBank{salt: uniqueSalt}(_savingPurpose, _duration, developer));
+        address newPiggyBank = address(
+            new PiggyBank{salt: uniqueSalt}(
+                _savingPurpose,
+                _duration,
+                developer
+            )
+        );
 
         DeployedPiggyBankInfo memory newDeployedPiggyBankInfo;
         newDeployedPiggyBankInfo.deployer = msg.sender;
@@ -51,25 +59,38 @@ contract PiggyBankFactory {
         emit PiggyBankCreated(newPiggyBank, msg.sender);
 
         return newPiggyBank;
-    } 
+    }
 
     // function to get all piggy banks
-    function getAllPiggyBans() external view returns (DeployedPiggyBankInfo[] memory) {
+    function getAllPiggyBans()
+        external
+        view
+        returns (DeployedPiggyBankInfo[] memory)
+    {
         return allPiggyBanks;
     }
 
     // function to get all piggyBanks by a user
-    function getUserPiggyBanks() external view returns (DeployedPiggyBankInfo[] memory) {
+    function getUserPiggyBanks()
+        external
+        view
+        returns (DeployedPiggyBankInfo[] memory)
+    {
         return allPiggyBanksByAuser[msg.sender];
     }
 
     // function to get one of the piggyBanks of a user using array index
-    function getUserPiggyBank(uint256 _index) external view returns (address){
-        require(_index < allPiggyBanksByAuser[msg.sender].length, "Index out of range"); // check if index is within array length
+    function getUserPiggyBank(uint256 _index) external view returns (address) {
+        require(
+            _index < allPiggyBanksByAuser[msg.sender].length,
+            "Index out of range"
+        ); // check if index is within array length
 
-        DeployedPiggyBankInfo memory deployedPiggyBankInfo = allPiggyBanksByAuser[msg.sender][_index]; 
-        
+        DeployedPiggyBankInfo
+            memory deployedPiggyBankInfo = allPiggyBanksByAuser[msg.sender][
+                _index
+            ];
+
         return deployedPiggyBankInfo.deployedPiggyBank;
     }
-    
 }

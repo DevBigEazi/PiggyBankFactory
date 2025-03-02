@@ -10,7 +10,7 @@ import "./libraries/Errors.sol";
 contract PiggyBank is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    // stablecoins on CELO blockchain
+    // stablecoins on Base blockchain
     IERC20 public constant USDT =
         IERC20(0x323e78f944A9a1FcF3a10efcC5319DBb0bB6e673);
     IERC20 public constant USDC =
